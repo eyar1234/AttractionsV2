@@ -1,0 +1,19 @@
+{
+  "name": "attractionsv2",
+  "version": "2.0.0",
+  "description": "## The APP take your coordinations and print you back the turist attractioens around you",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eyar1234/AttractionsV2.git"
+  },
+  "author": "Eyar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eyar1234/AttractionsV2/issues"
+  },
+  "homepage": "https://github.com/eyar1234/AttractionsV2#readme"
+}

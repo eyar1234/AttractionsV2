@@ -18,7 +18,7 @@ async function getTheName(latitude, longitude) {
         }
       }
 
-      return "new york"; // Return the city name
+      return city; // Return the city name
     } else {
       throw new Error(`Failed to fetch city: ${data.status}`);
     }
@@ -30,7 +30,8 @@ async function getTheName(latitude, longitude) {
 
 async function getTheAttractions(name, limit = 40, pageToken = "") {
   try {
-    let allResults = [];
+    let allResultsRow = [];
+    let allResults;
     let nextPageToken = pageToken;
     let totalResultsFetched = 0;
 
@@ -44,12 +45,12 @@ async function getTheAttractions(name, limit = 40, pageToken = "") {
     const firstResults = firstData.results;
 
     // Add results from the first request to the array
-    allResults.push(...firstResults);
+    allResultsRow.push(...firstResults);
     totalResultsFetched += firstResults.length;
 
     // If there's no next page token or if we've reached the limit, return the results
     if (!firstData.next_page_token || totalResultsFetched >= limit) {
-      return allResults.slice(0, limit);
+      return allResultsRow.slice(0, limit);
     }
 
     // Wait for 2 seconds before making the next request (as per Google's API documentation)
@@ -66,11 +67,25 @@ async function getTheAttractions(name, limit = 40, pageToken = "") {
     const secondResults = secondData.results;
 
     // Add results from the second request to the array
-    allResults.push(...secondResults);
+    allResultsRow.push(...secondResults);
     totalResultsFetched += secondResults.length;
 
+    // make a scema of the the data before send to user
+    allResults = allResultsRow.map((obj) => ({
+      name: obj.name,
+      rating: obj.rating,
+      address: obj.formatted_address,
+      photoReference: obj.photos[0].photo_reference,
+    }));
+
+    // Remove duplicate objects
+    const uniqueDataArray = allResults.filter(
+      (obj, index, array) =>
+        array.findIndex((item) => item.name === obj.name) === index
+    );
+
     // Return the combined results
-    return allResults.slice(0, limit);
+    return uniqueDataArray.slice(0, limit);
   } catch (error) {
     console.log(error);
     return []; // Return an empty array if there's an error

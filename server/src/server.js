@@ -9,12 +9,14 @@ const options = {
   key: fs.readFileSync("key.pem"),
   cert: fs.readFileSync("cert.pem"),
 };
+
 mongoose.connection.once("open", () => {
   console.log("mongoDB connection");
 });
 mongoose.connection.on("error", (err) => {
   console.log(err);
 });
+
 const server = https.createServer(options, app);
 async function startServer() {
   mongoose.connect(process.env.MONGO_URL);

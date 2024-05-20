@@ -4,7 +4,9 @@ async function coordsToData(latitude, longitude) {
     // console.log(res.data);
 
     return res.data;
-  } catch (error) {}
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 async function srcOfImage(photoReference) {
