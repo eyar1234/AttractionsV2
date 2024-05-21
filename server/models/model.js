@@ -19,7 +19,7 @@ async function getCityName(latitude, longitude) {
         }
       }
 
-      return city;
+      return city; // Return the extracted city name
     } else {
       throw new Error(`Failed to fetch city: ${data.status}`);
     }
@@ -36,35 +36,34 @@ async function getAttractions(city, limit = 40, pageToken = "") {
     let nextPageToken = pageToken;
     let totalResultsFetched = 0;
 
-    const firstResponse = await axios.get(
-      `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${city}+point+of+interest&language=he&key=${process.env.GOOGLE_KEY}&PageToken=${nextPageToken}`
+    do {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${city}+point+of+interest&language=he&key=${process.env.GOOGLE_KEY}&PageToken=${nextPageToken}`
+      );
+
+      const data = response.data;
+      const results = data.results;
+
+      allResultsRow.push(...results);
+      totalResultsFetched += results.length;
+
+      if (!data.next_page_token || totalResultsFetched >= limit) {
+        break;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      nextPageToken = data.next_page_token;
+    } while (totalResultsFetched < limit); // Continue fetching until the limit is reached
+
+    // Filter out objects with photoReference set to undefined
+    const filteredResultsRow = allResultsRow.filter(
+      (obj) =>
+        obj.photos &&
+        obj.photos[0] &&
+        obj.photos[0].photo_reference !== undefined
     );
 
-    const firstData = firstResponse.data;
-    const firstResults = firstData.results;
-
-    allResultsRow.push(...firstResults);
-    totalResultsFetched += firstResults.length;
-
-    if (!firstData.next_page_token || totalResultsFetched >= limit) {
-      return allResultsRow.slice(0, limit);
-    }
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    nextPageToken = firstData.next_page_token;
-    const secondResponse = await axios.get(
-      `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${city}+point+of+interest&language=he&key=${process.env.GOOGLE_KEY}&PageToken=${nextPageToken}`
-    );
-
-    const secondData = secondResponse.data;
-    const secondResults = secondData.results;
-
-    allResultsRow.push(...secondResults);
-    totalResultsFetched += secondResults.length;
-    console.log(allResultsRow);
-
-    allResults = allResultsRow.map((obj) => ({
+    allResults = filteredResultsRow.map((obj) => ({
       city: city,
       name: obj.name,
       rating: obj.rating,
@@ -72,6 +71,7 @@ async function getAttractions(city, limit = 40, pageToken = "") {
       photoReference: obj.photos[0].photo_reference,
     }));
 
+    // Remove duplicates based on the name property
     const uniqueDataArray = allResults.filter(
       (obj, index, array) =>
         array.findIndex((item) => item.name === obj.name) === index
@@ -87,14 +87,13 @@ async function getAttractions(city, limit = 40, pageToken = "") {
 }
 
 async function ReferenceToSrc(photoReference, width = 400) {
-  const res = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoReference}&maxwidth=${width}&key=${process.env.GOOGLE_KEY}`;
-  return res;
+  return `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoReference}&maxwidth=${width}&key=${process.env.GOOGLE_KEY}`;
 }
 
 async function saveAttractions(data) {
   const bulkOps = data.map((obj) => ({
     updateOne: {
-      filter: { name: obj.name }, // Assuming 'name' is unique
+      filter: { name: obj.name },
       update: { $set: obj },
       upsert: true,
     },

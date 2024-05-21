@@ -14,7 +14,7 @@ async function renderTheCorrentObject(dataArray, page) {
 
   // Get the image source
   let src = await srcOfImage(data.photoReference);
-  console.log(src);
+  // console.log(src);
 
   // Create the HTML
   const html = `

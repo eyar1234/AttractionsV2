@@ -11,12 +11,11 @@ async function httpGetAllAttractions(req, res) {
     const cityName = await getCityName(latitude, longitude);
     console.log(cityName);
 
-    const att = await attractions.find({ city: cityName });
-    console.log(att);
+    const DATA = await attractions.find({ city: cityName });
 
-    if (att.length > 0) {
+    if (DATA.length > 0) {
       // send the data back to the client
-      res.send(att);
+      res.send(DATA);
     } else {
       //get the attractions follow by the city name
       const attractionsArray = await getAttractions(cityName);
