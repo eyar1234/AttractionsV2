@@ -17,14 +17,14 @@ async function success(position) {
   console.log(dataArray);
 
   // render the first object
-  await renderTheCorrentObject(dataArray, page);
+  // await renderTheCorrentObject(dataArray, page);
 
-  // render on button click
-  button.addEventListener("click", async function () {
-    page = (page + 1) % dataArray.length; // cycle through the data
-    await renderTheCorrentObject(dataArray, page);
-    console.log(page);
-  });
+  // // render on button click
+  // button.addEventListener("click", async function () {
+  //   page = (page + 1) % dataArray.length; // cycle through the data
+  //   await renderTheCorrentObject(dataArray, page);
+  //   console.log(page);
+  // });
 }
 
 function error(err) {

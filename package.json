@@ -1,10 +1,11 @@
 {
-  "name": "attractionsv2",
-  "version": "2.0.0",
+  "name": "attractions",
+  "version": "1.0.0",
   "description": "## The APP take your coordinations and print you back the turist attractioens around you",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "cd server && npm start",
+    "start": "npm run server"
   },
   "repository": {
     "type": "git",
