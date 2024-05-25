@@ -6,13 +6,18 @@ const locationRouter = require("../route/location.router.js");
 const ImageRouter = require("../route/image.router.js");
 app.use(
   cors({
-    origin: "localhost:8000",
+    origin: ["http://localhost:8000", "http://localhost:3000"],
   })
 );
 
 app.use(express.json());
 app.use(locationRouter);
 app.use(ImageRouter);
+// new version
+// app.use(
+//   express.static(path.join(__dirname, "..", "..", "reactclient", "public"))
+// );
+// old version
 app.use(express.static(path.join(__dirname, "..", "..", "client")));
 
 module.exports = app;

@@ -9,6 +9,7 @@ and show how to do the following:
 
 - create a custom web server with using HTTPRouter
 - create a simple REST API thet made from google
+- use mongoDb server to reduce the amount of requests from the API
 
 ## start
 

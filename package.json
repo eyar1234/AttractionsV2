@@ -4,8 +4,12 @@
   "description": "## The APP take your coordinations and print you back the turist attractioens around you",
   "main": "server.js",
   "scripts": {
-    "server": "cd server && npm start",
-    "start": "npm run server"
+    "install-server": "npm install --prefix server",
+    "install-client": "npm install --prefix reactClient/client",
+    "server": "npm run watch --prefix server",
+    "client": "npm start --prefix reactClient/client",
+    "start": "npm run --prefix server ",
+    "deploy": "npm run start --prefix reactClient/client & npm start --prefix server"
   },
   "repository": {
     "type": "git",

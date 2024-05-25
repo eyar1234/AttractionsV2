@@ -55,7 +55,7 @@ async function getAttractions(city, limit = 40, pageToken = "") {
       nextPageToken = data.next_page_token;
     } while (totalResultsFetched < limit); // Continue fetching until the limit is reached
 
-    // Filter out objects with photoReference set to undefined
+    // Filter out objects by value 'undefind'
     const filteredResultsRow = allResultsRow.filter(
       (obj) =>
         obj.photos &&
@@ -65,12 +65,25 @@ async function getAttractions(city, limit = 40, pageToken = "") {
 
     allResults = filteredResultsRow.map((obj) => ({
       city: city,
-      name: obj.name,
+      name: obj.name.toLowerCase(),
       rating: obj.rating,
       address: obj.formatted_address,
       photoReference: obj.photos[0].photo_reference,
+      src: "",
     }));
 
+    // Function to update the array of objects
+    async function updateData(data) {
+      for (let i = 0; i < data.length; i++) {
+        const currentObject = data[i];
+        currentObject.src = await ReferenceToSrc(currentObject.photoReference);
+      }
+    }
+
+    // Calling the function and logging the result
+    updateData(allResults).then(() => {
+      console.log("All data updated:", allResults);
+    });
     // Remove duplicates based on the name property
     const uniqueDataArray = allResults.filter(
       (obj, index, array) =>

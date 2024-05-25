@@ -10,6 +10,7 @@ const options = {
   cert: fs.readFileSync("cert.pem"),
 };
 
+// conection to mongoDB
 mongoose.connection.once("open", () => {
   console.log("mongoDB connection");
 });
