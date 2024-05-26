@@ -18,6 +18,6 @@ app.use(ImageRouter);
 //   express.static(path.join(__dirname, "..", "..", "reactclient", "public"))
 // );
 // old version
-app.use(express.static(path.join(__dirname, "..", "..", "client")));
+// app.use(express.static(path.join(__dirname, "..", "..", "client")));
 
 module.exports = app;

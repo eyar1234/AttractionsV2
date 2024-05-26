@@ -7,9 +7,9 @@
     "install-server": "npm install --prefix server",
     "install-client": "npm install --prefix reactClient/client",
     "server": "npm run watch --prefix server",
-    "client": "npm start --prefix reactClient/client",
-    "start": "npm run --prefix server ",
-    "deploy": "npm run start --prefix reactClient/client & npm start --prefix server"
+    "client": "npm start --prefix reactclient",
+    "start": "npm run server & npm run client ",
+    "deploy": "npm run build --prefix reactclient & npm start --prefix server"
   },
   "repository": {
     "type": "git",

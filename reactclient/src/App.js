@@ -44,22 +44,26 @@ function App() {
   }, []);
 
   // Function to handle button click
+
   const handleButtonClick = () => {
     const nextIndex = (currentIndex + 1) % data.length;
     setCurrentIndex(nextIndex);
   };
 
+  const handleButtonClickBack = () => {
+    const previousIndex = (currentIndex - 1 + data.length) % data.length;
+    setCurrentIndex(previousIndex);
+  };
+  //function to handle oposite behave
+
   return (
     <div className="html">
       <div className="body">
-        {
-          <>
-            <Card data={data[currentIndex]} />
-            <button type="button" onClick={handleButtonClick}>
-              Next
-            </button>
-          </>
-        }
+        <Card
+          clickHandler={handleButtonClick}
+          opositeClickHandler={handleButtonClickBack}
+          data={data[currentIndex]}
+        />
       </div>
     </div>
   );

@@ -1,13 +1,15 @@
 import React from "react";
 import "./card.style.css";
 import icons from "../img/icons.svg";
-function Card({ data }) {
+function Card({ data, clickHandler, opositeClickHandler }) {
   if (!data || !data.name) {
     return (
-      <div className="spinner">
-        <svg>
-          <use href={`${icons}#icon-loader`}></use>
-        </svg>
+      <div className="spinnerContainer">
+        <div className="spinner">
+          <svg>
+            <use href={`${icons}#icon-loader`}></use>
+          </svg>
+        </div>
       </div>
     ); // Handle case where name is undefined or null
   }
@@ -23,6 +25,14 @@ function Card({ data }) {
           <span>{"⭐️".repeat(Math.floor(data.rating))}</span>
           {data.rating}
         </p>
+        <div className="buttons">
+          <button onClick={opositeClickHandler} className="button">
+            חזרה
+          </button>
+          <button onClick={clickHandler} className="button">
+            הבא
+          </button>
+        </div>
       </div>
     </div>
   );
