@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "install-server": "npm install --prefix server",
-    "install-client": "npm install --prefix reactClient/client",
+    "install-client": "npm install --prefix reactclient",
+    "install": "npm run install-server & npm run install-client",
     "server": "npm run watch --prefix server",
     "client": "npm start --prefix reactclient",
     "start": "npm run server & npm run client ",
-    "deploy": "npm run build --prefix reactclient & npm start --prefix server"
+    "deploy": "npm run build --prefix reactclient && npm start --prefix server"
   },
   "repository": {
     "type": "git",

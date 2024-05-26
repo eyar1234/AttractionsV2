@@ -1,7 +1,7 @@
 import axios from "axios";
 export async function coordsToData(latitude, longitude) {
   try {
-    const res = await axios.post("https://localhost:8000/location", {
+    const res = await axios.post("/location", {
       latitude,
       longitude,
     });

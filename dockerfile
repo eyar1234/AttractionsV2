@@ -1,23 +1,31 @@
-# Use an official Node.js runtime as the base image
-FROM node:14-alpine
+FROM node:18-alpine
 
-# Set the working directory in the container
+# Set working directory for the application
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy package.json files and install dependencies for the client
+COPY reactclient/package*.json ./reactclient/
+RUN cd reactclient && npm install --omit=dev
 
-COPY /client /client
+# Build the client application
+COPY reactclient/ ./reactclient/
+RUN cd reactclient && npm run build
 
-# Install dependencies
-RUN npm install
+# Copy package.json files and install dependencies for the server
+COPY server/package*.json ./server/
+RUN cd server && npm install --omit=dev
 
-# Copy the rest of the application code
-COPY . .
+# Copy the server source code
+COPY server/ ./server/
 
-# Expose port 3000 to the outside world
+# Switch to the 'node' user
+USER node
 
-# Command to run the application
+# Set working directory for the server
+WORKDIR /app/server
+
+# Start the server
 CMD ["npm", "start"]
 
+# Expose the port the app runs on
 EXPOSE 8000

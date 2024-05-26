@@ -8,13 +8,15 @@ this project was example that was built along with google places API
 and show how to do the following:
 
 - create a custom web server with using HTTPRouter
-- create a simple REST API thet made from google
-- use mongoDb server to reduce the amount of requests from the API
+- create a REST API based on google service
+- use mongo-DB to reduce the amount of requests from the API and make it faster and cheaper
+- use react
 
 ## start
 
-create .env with google places key and PORT
+create server/.env with
+[google key, PORT, MONGO_URL]
 
-npm i
+## npm install
 
-npm start
+## npm deploy
